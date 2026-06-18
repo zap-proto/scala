@@ -1,9 +1,9 @@
-name := "capnproto"
+name := "zap"
 
 scalaVersion in ThisBuild := "2.11.8"
 
 lazy val root = project.in(file(".")).
-  aggregate(runtimeJS, runtimeJVM, capnpcScala, compilerTestJS, compilerTestJVM).
+  aggregate(runtimeJS, runtimeJVM, zapcScala, compilerTestJS, compilerTestJVM).
   settings(
     publish := {},
     publishLocal := {}
@@ -11,7 +11,7 @@ lazy val root = project.in(file(".")).
 
 lazy val runtime = crossProject.in(file("./runtime")).
   settings(
-    name := "capnproto",
+    name := "zap",
     version := "0.1-SNAPSHOT",
     libraryDependencies += "org.scalactic" %%% "scalactic" % "3.0.0",
     libraryDependencies += "org.scalatest" %%% "scalatest" % "3.0.0" % "test"
@@ -22,8 +22,8 @@ lazy val runtime = crossProject.in(file("./runtime")).
 lazy val runtimeJVM = runtime.jvm
 lazy val runtimeJS = runtime.js
 
-lazy val capnpcScala = project.in(file("./compiler")).dependsOn(runtimeJVM)
-mainClass in capnpcScala := Some("org.katis.capnproto.compiler.Compiler")
+lazy val zapcScala = project.in(file("./compiler")).dependsOn(runtimeJVM)
+mainClass in zapcScala := Some("org.katis.zap.compiler.Compiler")
 
 lazy val sample = project.in(file("./example"))
     .aggregate(exampleJS, exampleJVM)
@@ -39,7 +39,7 @@ lazy val compilerTestJVM = compilerTest.jvm.dependsOn(runtimeJVM)
 
 lazy val example = crossProject.in(file("./example"))
   .settings(
-    name := "Cap'n Proto example",
+    name := "ZAP example",
     version := "0.1-SNAPSHOT",
     libraryDependencies += "org.scala-lang.modules" %% "scala-async" % "0.9.6"
   ).jvmSettings(
@@ -53,21 +53,21 @@ lazy val example = crossProject.in(file("./example"))
 lazy val exampleJS = example.js.dependsOn(runtimeJS)
 lazy val exampleJVM = example.jvm.dependsOn(runtimeJVM)
 
-lazy val testschemas = taskKey[Unit]("Compiles test cap'n proto files")
+lazy val testschemas = taskKey[Unit]("Compiles test zap files")
 
 testschemas := {
-  val v = (assembly in capnpcScala).value
+  val v = (assembly in zapcScala).value
 
   def listFiles(f: File): Seq[String] = f match {
     case dir if dir.isDirectory =>
       dir.listFiles().flatMap(listFiles)
-    case file if file.getAbsolutePath.endsWith(".capnp") =>
+    case file if file.getAbsolutePath.endsWith(".zap") =>
       Seq(file.getAbsolutePath)
     case _ =>
       Seq.empty
   }
 
-  val d = new File("compilerTest/shared/src/test/scala-2.11/org/katis/capnproto/compiler")
+  val d = new File("compilerTest/shared/src/test/scala-2.11/org/katis/zap/compiler")
   if (d.exists() && d.isDirectory) {
     val files = listFiles(d)
     val args = Seq("java", "-jar", v.getAbsolutePath) ++ files
