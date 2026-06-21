@@ -1,11 +1,12 @@
 package org.katis.zap.compiler
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 import contents._
 import org.katis.zap.runtime.implicits._
 import org.katis.zap.runtime.MessageBuilder
 
-class ListListSpec extends FlatSpec with Matchers {
+class ListListSpec extends AnyFlatSpec with Matchers {
   "A ListList" should "allow reading and writing" in {
     val builder = new MessageBuilder()
     val msg = builder.getRoot[Contents]

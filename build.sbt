@@ -1,6 +1,6 @@
 name := "zap"
 
-scalaVersion in ThisBuild := "2.11.12"
+ThisBuild / scalaVersion := "2.11.12"
 
 lazy val root = project.in(file(".")).
   aggregate(runtimeJS, runtimeJVM, zapcScala, compilerTestJS, compilerTestJVM).
@@ -9,35 +9,33 @@ lazy val root = project.in(file(".")).
     publishLocal := {}
   )
 
-lazy val runtime = crossProject.in(file("./runtime")).
+lazy val runtime = crossProject(JVMPlatform, JSPlatform).crossType(CrossType.Full).in(file("./runtime")).
   settings(
     name := "zap",
     version := "0.1-SNAPSHOT",
-    libraryDependencies += "org.scalactic" %%% "scalactic" % "3.0.9",
-    libraryDependencies += "org.scalatest" %%% "scalatest" % "3.0.9" % "test"
-  ).
-  jvmSettings().
-  jsSettings()
+    libraryDependencies += "org.scalactic" %%% "scalactic" % "3.2.19",
+    libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.19" % "test"
+  )
 
 lazy val runtimeJVM = runtime.jvm
 lazy val runtimeJS = runtime.js
 
 lazy val zapcScala = project.in(file("./compiler")).dependsOn(runtimeJVM)
-mainClass in zapcScala := Some("org.katis.zap.compiler.Compiler")
+zapcScala / mainClass := Some("org.katis.zap.compiler.Compiler")
 
 lazy val sample = project.in(file("./example"))
     .aggregate(exampleJS, exampleJVM)
 
-lazy val compilerTest = crossProject.in(file("./compilerTest"))
+lazy val compilerTest = crossProject(JVMPlatform, JSPlatform).crossType(CrossType.Full).in(file("./compilerTest"))
     .settings(
-      libraryDependencies += "org.scalactic" %%% "scalactic" % "3.0.9",
-      libraryDependencies += "org.scalatest" %%% "scalatest" % "3.0.9" % "test"
+      libraryDependencies += "org.scalactic" %%% "scalactic" % "3.2.19",
+      libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.19" % "test"
     )
 
 lazy val compilerTestJS = compilerTest.js.dependsOn(runtimeJS)
 lazy val compilerTestJVM = compilerTest.jvm.dependsOn(runtimeJVM)
 
-lazy val example = crossProject.in(file("./example"))
+lazy val example = crossProject(JVMPlatform, JSPlatform).crossType(CrossType.Full).in(file("./example"))
   .settings(
     name := "ZAP example",
     version := "0.1-SNAPSHOT",
@@ -56,7 +54,7 @@ lazy val exampleJVM = example.jvm.dependsOn(runtimeJVM)
 lazy val testschemas = taskKey[Unit]("Compiles test zap files")
 
 testschemas := {
-  val v = (assembly in zapcScala).value
+  val v = (zapcScala / assembly).value
 
   def listFiles(f: File): Seq[String] = f match {
     case dir if dir.isDirectory =>
