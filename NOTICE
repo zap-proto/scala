@@ -1,0 +1,11 @@
+scala — part of the ZAP Protocol (github.com/zap-proto)
+
+This product includes software developed by the capnproto-scala project:
+  capnproto-scala — https://github.com/katis/capnproto-scala
+  Copyright (c) 2016 Joni Katajamäki
+  Licensed under the MIT License (see License.md).
+
+ZAP is a derivative work: a brand-neutral fork of capnproto-scala providing a
+Scala 3 / Scala.js implementation of ZAP with idiomatic case classes and
+opaque types for zero-allocation reads.
+Modifications Copyright (c) 2025 Lux Industries Inc.
