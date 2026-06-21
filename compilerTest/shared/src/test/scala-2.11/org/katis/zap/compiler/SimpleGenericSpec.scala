@@ -2,10 +2,11 @@ package org.katis.zap.compiler
 
 import org.katis.zap.runtime.implicits._
 import org.katis.zap.runtime.{MessageBuilder, Text}
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 import SimpleGeneric._
 
-class SimpleGenericSpec extends FlatSpec with Matchers {
+class SimpleGenericSpec extends AnyFlatSpec with Matchers {
   "A GenericMap" should "be able to read & write Text entries" in {
     val builder = new MessageBuilder()
     val map = builder.getRoot[GenericMap[Text, Text]]

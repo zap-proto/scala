@@ -2,9 +2,10 @@ package org.katis.zap.runtime
 
 import java.nio._
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class ByteBufferListSpec extends FlatSpec with Matchers {
+class ByteBufferListSpec extends AnyFlatSpec with Matchers {
   "A ByteBufferList" should "handle sources larger than sink" in {
     val sink1 = ByteBuffer.allocate(2)
     val sink2 = ByteBuffer.allocate(2)

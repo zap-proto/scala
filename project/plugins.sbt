@@ -1,4 +1,6 @@
 logLevel := Level.Warn
 
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.33")
-addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.10")
+// Scala.js 1.12.0 is the last release supporting Scala 2.11.
+addSbtPlugin("org.scala-js"       % "sbt-scalajs"              % "1.12.0")
+addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "1.3.2")
+addSbtPlugin("com.eed3si9n"       % "sbt-assembly"             % "2.3.1")

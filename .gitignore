@@ -1,2 +1,7 @@
-target
+target/
+project/target/
+project/project/
 .idea
+.bsp/
+.bloop/
+.metals/
